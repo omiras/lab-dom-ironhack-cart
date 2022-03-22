@@ -62,11 +62,11 @@ function removeProduct(event) {
 
   // Tenemos que eliminar del DOM: el padre del padre del elemento clicado
   let productoEliminar = target.parentNode.parentNode;
-  
+
   // parentNode.parentNode?? Explicación: https://oscarm.tinytake.com/msc/NjY1MTI4NF8xOTIxMDY0OQ
 
   // el producto es un hijo de la tabla. Me guardo el nodo "tbody"; y le paso como parámetro a la función 'removeChild' el nodo que hay que eliminar. ¡Es super importante entender que la esctructura HTML es una estructura jerárquica de árbol!
- 
+
   document.querySelector("tbody").removeChild(productoEliminar);
 
 }
@@ -75,6 +75,35 @@ function removeProduct(event) {
 
 function createProduct() {
   //... your code goes here
+
+  // Recupero el nombre y el precio del producto. Podríamos poner etiquetas id en el HTML sin problema.
+
+  let name = document.querySelectorAll(".create-product input")[0].value;
+  let price = document.querySelectorAll(".create-product input")[1].value;
+
+  // Es rara esta notación? document.querySelectorAll(".create-product input") devuelve un 'array de nodos'. [0] accede al primer input. .value accede a la propuedad 'value' del input. Lo he puesto así a propósito; pero sería más eficiente guardar el array de inputs en una variable.
+
+  // Creo un nuevo producto. Es una nueva fila de la tabla. Fijaos como usamos innerHTML para poder crear un montón de nodos y ahorrarnos hacer miles de 'createElement'
+
+  let newProduct = document.createElement("tr");
+  newProduct.innerHTML = `
+        <tr class="product">
+        <td class="name">
+          <span>${name}</span>
+        </td>
+        <td class="price">$<span>${price}</span></td>
+        <td class="quantity">
+          <input type="number" value="0" min="0" placeholder="Quantity" />
+        </td>
+        <td class="subtotal">$<span>0</span></td>
+        <td class="action">
+          <button class="btn btn-remove">Remove</button>
+        </td>
+      </tr>`;
+
+  // Añadimos el producto a la tabla
+  document.querySelector("tbody").appendChild(newProduct);
+
 }
 
 window.addEventListener('load', () => {
@@ -90,5 +119,11 @@ window.addEventListener('load', () => {
   document.querySelectorAll(".btn-remove").forEach(button => {
     button.addEventListener("click", removeProduct);
   });
+
+  // ITERATION 5
+
+  // Asocio el evento "click" al botón con id="create". NO utilizo forEach....¡querySelector no devuelve un array, si no un nodo!
+
+  document.querySelector("#create").addEventListener("click", createProduct);
 
 });
