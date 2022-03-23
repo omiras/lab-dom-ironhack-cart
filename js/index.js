@@ -103,6 +103,8 @@ function createProduct() {
 
   // Añadimos el producto a la tabla
   document.querySelector("tbody").appendChild(newProduct);
+  
+  newProduct.querySelector('.btn-remove').addEventListener("click",removeProduct);
 
 }
 
